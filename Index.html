@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprianto: Petualangan Lemah yang Menjadi Raja</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #4B0082, #0000FF); /* Gradien ungu ke biru */
+            color: white;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            min-height: 200px; /* Tinggi minimum untuk menampung 2-4 stickman */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .panel:hover {
+            transform: scale(1.02);
+        }
+        .text {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        .stickman-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        .stickman-title {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        /* Stickman CSS - bentuk mirip asli: kepala bulat, tubuh garis, lengan T, kaki V */
+        .stickman {
+            width: 120px;
+            height: 180px;
+            position: relative;
+            margin: 0;
+            transition: all 0.5s ease; /* Smooth transition */
+        }
+        .head {
+            width: 36px;
+            height: 36px;
+            border: 3px solid white;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 42px;
+        }
+        .body {
+            width: 3px;
+            height: 72px;
+            background: white;
+            position: absolute;
+            top: 36px;
+            left: 58px;
+        }
+        .arms {
+            width: 48px;
+            height: 3px;
+            background: white;
+            position: absolute;
+            top: 48px;
+            left: 36px;
+        }
+        .legs {
+            width: 3px;
+            height: 48px;
+            background: white;
+            position: absolute;
+            top: 108px;
+            left: 58px;
+        }
+        .legs::after {
+            content: '';
+            width: 24px;
+            height: 3px;
+            background: white;
+            position: absolute;
+            top: 45px;
+            left: -10px;
+        }
+        /* Inisial di wajah */
+        .initial {
+            position: absolute;
+            top: 12px;
+            left: 48px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+        }
+        /* Warna pelangi untuk Aprianto */
+        .rainbow {
+            animation: rainbow 3s infinite linear;
+        }
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+        /* Animasi khusus - lebih smooth dengan lebih banyak keyframes dan easing */
+        .walking {
+            /* Animasi walking menggunakan JS untuk lebih fluid */
+        }
+        .weak {
+            opacity: 0.5;
+            animation: tremble 1.5s infinite ease-in-out;
+        }
+        @keyframes tremble {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            12.5% { transform: rotate(-0.5deg) scale(0.99); }
+            25% { transform: rotate(-1deg) scale(0.98); }
+            37.5% { transform: rotate(-0.5deg) scale(0.99); }
+            50% { transform: rotate(0deg) scale(1); }
+            62.5% { transform: rotate(0.5deg) scale(0.99); }
+            75% { transform: rotate(1deg) scale(0.98); }
+            87.5% { transform: rotate(0.5deg) scale(0.99); }
+        }
+        .blessed {
+            animation: glow 3s infinite ease-in-out;
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px white; transform: scale(1); }
+            25% { box-shadow: 0 0 15px yellow; transform: scale(1.02); }
+            50% { box-shadow: 0 0 30px yellow; transform: scale(1.05); }
+            75% { box-shadow: 0 0 15px yellow; transform: scale(1.02); }
+        }
+        .fighting {
+            animation: punch 1.2s infinite ease-in-out;
+        }
+        @keyframes punch {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(2deg) scale(1.01); }
+            50% { transform: rotate(5deg) scale(1.02); }
+            75% { transform: rotate(2deg) scale(1.01); }
+        }
+        .attacking {
+            animation: attack 1.5s infinite ease-in-out;
+        }
+        @keyframes attack {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(-10deg) scale(1.1); }
+            50% { transform: rotate(-20deg) scale(1.2); }
+            75% { transform: rotate(-10deg) scale(1.1); }
+        }
+        .defending {
+            animation: defend 2s infinite ease-in-out;
+        }
+        @keyframes defend {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(5deg) scale(0.95); }
+            50% { transform: rotate(10deg) scale(0.9); }
+            75% { transform: rotate(5deg) scale(0.95); }
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; font-size: 36px;">Aprianto: Petualangan Lemah yang Menjadi Raja</h1>
+        
+        <div class="panel" id="panel1">
+            <div class="text">Di balik kabut tipis pagi itu, Aprianto membuka matanya dengan perasaan bingung. Ia tidak lagi berada di kamarnya yang hangat dan modern, melainkan terbaring di padang rumput luas dengan bau tanah dan hutan yang kental di sekitarnya. Ia telah terindah ke zaman medieval—sebuah dunia yang keras, penuh pedang, baju zirah, dan peperangan.</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman weak rainbow" data-anim="weak">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel2">
+            <div class="text">Tubuhnya terasa lemah, hampir tak bertenaga saat bangkit. Aprianto tahu, di dunia ini, hanya yang kuat yang bisa bertahan. Namun tekad meluruh di dadanya, ia yakin bisa menjadi lebih kuat, lebih hebat dari kondisi saat ini. Ia mulai berjalan tanpa tujuan pasti, menyusuri desa dan kota kecil, belajar dari orang-orang yang hidupnya keras dan penuh pergulatan.</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman walking rainbow" data-anim="walking">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel3">
+            <div class="text">Setiap langkah adalah perjuangan. Aprianto sering dijadikan bahan cemoohan karena tampak lemah dan tidak berpengalaman. Pedang yang dipegangnya tak mampu mengimbangi kekuatan orang lain. Tubuhnya yang dulu sehat kini mudah lelah dan terpukul.</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman weak rainbow" data-anim="weak">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+                <div class="stickman-title">Pirate</div>
+                <div class="stickman fighting" data-anim="fighting">
+                    <div class="head"><div class="initial">P</div></div> <!-- P untuk Pirate -->
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel4">
+            <div class="text">Namun apa yang membuat Aprianto berbeda adalah hatinya. Ia yakin Tuhan memberinya kesempatan kedua melalui waktu ini. Aprianto berdoa, berjuang, dan tidak pernah menyerah, sekalipun jatuh berkali-kali.</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman weak rainbow" data-anim="weak">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel5">
+            <div class="text">Malam yang dingin dan sunyi datang ketika Aprianto tengah mencari perlindungan di reruntuhan sebuah kastil tua. Tiba-tiba, cahaya lembut menyinari wajahnya. Dari langit turun sebuah suara gemuruh dan teduh berkata, “Aprianto, engkau diberkahi dengan Berkah Penghakiman, berkah langka yang hanya bagi jiwa yang tak pernah menyerah walau dalam kelemahan.”</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman blessed rainbow" data-anim="blessed">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel6">
+            <div class="text">Cahaya itu membungkus tubuh Aprianto, mengalirkan kekuatan, keberanian, dan kebijaksanaan yang sebelumnya tak pernah ia miliki. Tubuhnya terasa kuat, pikirannya jernih, dan matanya mampu melihat kebenaran dalam tiap persoalan.</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman blessed rainbow" data-anim="blessed">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel7">
+            <div class="text">Dengan kekuatan baru, Aprianto berubah menjadi petualang yang legendaris. Ia mengelilingi negeri, mengalahkan bajak laut, menyelamatkan desa-desa dari ancaman penjahat, dan membela kaum tertindas dengan adil. Kisahnya meluas, namanya dikenal dari mulut ke mulut—"Apri si Penghakim," pahlawan yang membela keadilan tanpa pandang bulu.</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman attacking rainbow" data-anim="attacking">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+                <div class="stickman-title">Villain</div>
+                <div class="stickman weak" data-anim="weak">
+                    <div class="head"><div class="initial">V</div></div> <!-- V untuk Villain -->
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel8">
+            <div class="text">Kerajaan Conueror, yang tengah dilanda kerusuhan dan perang saudara, mendengar tentang Aprianto. Sang raja yang lemah dan para bangsawan korup kehilangan kepercayaan rakyat. Setelah bertemu Aprianto dan menyaksikan kebijaksanaan serta kekuatannya, para tetua kerajaan dan rakyat ramai-ramai memintanya menjadi pemimpin baru.</div>
+            <div class="stickman-container">
+                <div class="stickman-title">King</div>
+                <div class="stickman weak" data-anim="weak">
+                    <div class="head"><div class="initial">K</div></div> <!-- K untuk King -->
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman defending rainbow" data-anim="defending">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel9">
+            <div class="text">Aprianto pun menerima takhta dengan satu janji: “Aku akan memerintah dengan keadilan dan keberanian. Negeri ini akan makmur dan damai di bawah pimpinan yang kau percaya, bukan kekuatan yang hanya mencari kuasa.”</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman blessed rainbow" data-anim="blessed">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel" id="panel10">
+            <div class="text">Seperti itulah, Aprianto berubah menjadi Apri Conueror I, raja yang menjadi simbol harapan dan perubahan. Namanya abadi dalam sejarah, bukan hanya sebagai raja yang kuat, tapi juga sebagai pelindung hati rakyatnya. Kisah Apri Conueror I mengajarkan kita satu hal: tidak peduli seberapa lemah kita pada awalnya, selama ada tekad dan berkah, kita bisa menaklukkan dunia.</div>
+            <div class="stickman-container">
+                <div class="stickman-title">Aprianto</div>
+                <div class="stickman blessed rainbow" data-anim="blessed">
+                    <div class="head"><div class="initial">A</div></div>
+                    <div class="body"></div>
+                    <div class="arms"></div>
+                    <div class="legs"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        @2025 Aprianto dev
+    </footer>
+
+    <script>
+        // JS untuk animasi stickman yang lebih smooth dan tidak kaku
+        const panels = document.querySelectorAll('.panel');
+        panels.forEach(panel => {
+            panel.addEventListener('click', () => {
+                const stickmen = panel.querySelectorAll('.stickman');
+                stickmen.forEach(stickman => {
+                    const animType = stickman.getAttribute('data-anim');
+                    if (animType === 'walking') {
+                        startWalkingAnimation(stickman);
+                    } else {
+                        // Untuk animasi CSS lainnya, mulai dengan playState
+                        stickman.style.animationPlayState = 'running';
+                    }
+                });
+            });
+        });
+
+        function startWalkingAnimation(stickman)
